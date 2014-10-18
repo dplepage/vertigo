@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='vertigo',
-    version='0.1.1',
+    version='0.1.2',
     license='BSD',
     author="Daniel Lepage",
     author_email="dplepage@gmail.com",
@@ -14,5 +14,6 @@ setup(
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 3",
     ]
 )
