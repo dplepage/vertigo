@@ -10,6 +10,7 @@ setup(
     author_email="dplepage@gmail.com",
     packages=['vertigo',],
     long_description=open('README.rst').read(),
+    url='https://github.com/dplepage/vertigo',
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 2",
