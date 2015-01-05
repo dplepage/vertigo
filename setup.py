@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='vertigo',
-    version='0.1.2',
+    version='0.1.3',
     license='BSD',
     author="Daniel Lepage",
     author_email="dplepage@gmail.com",
