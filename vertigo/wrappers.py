@@ -176,3 +176,63 @@ class SortedWrapper(GraphWrapper):
     '''
     def key_iter(self):
         return sorted(self.graph.key_iter())
+
+class ValueOverlay(GraphWrapper):
+    '''Overlays a single graph node, replacing its value.
+
+    The children are unchanged and passed through directly.
+
+    >>> from .graph import PlainGraphNode as G
+    >>> from .misc_fns import ascii_tree
+    >>> g = G("Root", [("foo", G("fooval")), ("bar", G("barval"))])
+    >>> print(ascii_tree(ValueOverlay(g, "New Root")))
+    root: 'New Root'
+      +--foo: 'fooval'
+      +--bar: 'barval'
+    '''
+    __slots__ = ('_value',)
+
+    def __init__(self, graph, value):
+        self.graph = graph
+        self._value = value
+
+    @property
+    def value(self):
+        return self._value
+
+    def _get_child(self, key):
+        return self.graph[key]
+
+
+class EdgeRestriction(GraphWrapper):
+    '''Overlays a single graph node, hiding all but a subset of its edges.
+
+    The value and some children are passed through directly. The init arg
+    'edge_names' specifies the set of edges that can be followed
+
+    >>> from .graph import PlainGraphNode as G
+    >>> from .misc_fns import ascii_tree
+    >>> g = G("Root", [("foo", G("fooval")), ("bar", G("barval"))])
+    >>> g2 = EdgeRestriction(g, ["bar"])
+    >>> print(ascii_tree(g2))
+    root: 'Root'
+      +--bar: 'barval'
+    >>> g2['bar'] is g['bar']
+    True
+    >>> g2['foo']
+    Traceback (most recent call last):
+        ...
+    KeyError: 'foo'
+    '''
+    __slots__ = ('edge_names',)
+    def __init__(self, graph, edge_names):
+        self.graph = graph
+        self.edge_names = edge_names
+
+    def key_iter(self):
+        return (x for x in self.graph.key_iter() if x in self.edge_names)
+
+    def _get_child(self, key):
+        if key in self.edge_names:
+            return self.graph[key]
+        raise KeyError(key)

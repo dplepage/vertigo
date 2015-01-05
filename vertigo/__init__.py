@@ -7,7 +7,7 @@ from .misc_fns import make_path_graph, imap, map, replace, fill_nones, dbg_print
 from .misc_fns import ascii_tree, to_dict, from_dict, to_flat, from_flat, pick
 from .misc_fns import apply
 from .merge_fns import overlay, Omit, merge
-from .wrappers import GraphWrapper, SortedWrapper
+from .wrappers import GraphWrapper, SortedWrapper, ValueOverlay, EdgeRestriction
 
 __all__ = [
     'Graphable',
@@ -44,4 +44,6 @@ __all__ = [
     'merge',
     'GraphWrapper',
     'SortedWrapper',
+    'ValueOverlay',
+    'EdgeRestriction',
 ]
