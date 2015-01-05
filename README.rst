@@ -1,5 +1,5 @@
 =========================================
- Vertigo: Some really simple graph tools
+ Vertigo: Some really simple graph tools |travbadge|
 =========================================
 
 Vertigo is a small collection of classes and functions for building and working
@@ -12,6 +12,8 @@ want to import them all into your namespace, you should rename the module to
 ``vg``::
 
     >>> import vertigo as vg
+
+[![Build Status](https://travis-ci.org/dplepage/vertigo.svg?branch=master)](https://travis-ci.org/dplepage/vertigo)
 
 Graphs
 ======
@@ -313,3 +315,6 @@ first non-None value in the tuple.
 that takes two graphs and returns the subgraph of one of them matching the
 structure of the other. Look at the individual functions there to see what they
 do.
+
+.. |travbadge| image:: https://travis-ci.org/dplepage/vertigo.svg?branch=master
+ :target: https://travis-ci.org/dplepage/vertigo
