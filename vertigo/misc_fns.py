@@ -559,19 +559,25 @@ def from_flat(d, cls=PlainGraphNode, sep='/'):
         target.value = val
     return root
 
-def _tf_helper(graph, prefix, minimize, sep):
-    d = {}
+def _tf_helper(graph, prefix, minimize, sep, ordered):
+    if ordered:
+        d = OrderedDict()
+        d[prefix] = None
+    else:
+        d = {}
     for key, child in graph.edge_iter():
         if sep:
             sub_prefix = sep.join([prefix, key]) if prefix else key
         else:
             sub_prefix = prefix + (key,) if prefix else (key,)
-        d.update(_tf_helper(child, sub_prefix, minimize, sep))
+        d.update(_tf_helper(child, sub_prefix, minimize, sep, ordered))
     if graph.value is not None or not minimize or not d:
         d[prefix] = graph.value
+    elif ordered:
+        del d[prefix]
     return d
 
-def to_flat(graph, minimize=False, sep='/'):
+def to_flat(graph, minimize=False, sep='/', ordered=False):
     '''The inverse of from_flat.
 
     >>> d = {
@@ -622,8 +628,20 @@ def to_flat(graph, minimize=False, sep='/'):
     ... }
     True
 
+    If the optional argument `ordered` is True, then the result will be an
+    OrderedDict and will preserve the ordering of the edges:
+
+    >>> g = from_flat(OrderedDict([
+    ...     ('foo/bar', "A bar value"),
+    ...     ('foo/baz/qux', 12),
+    ...     ('spam', None),
+    ... ]))
+    >>> to_flat(g, ordered=True)
+    OrderedDict([('', None), ('foo', None), ('foo/bar', 'A bar value'), ('foo/baz', None), ('foo/baz/qux', 12), ('spam', None)])
+    >>> to_flat(g, minimize=True, ordered=True)
+    OrderedDict([('foo/bar', 'A bar value'), ('foo/baz/qux', 12)])
     '''
-    return _tf_helper(graph, '', minimize, sep)
+    return _tf_helper(graph, '', minimize, sep, ordered)
 
 class AppliedGraphNode(GraphNode):
     '''GraphNode that applies a function graph to another graph.
