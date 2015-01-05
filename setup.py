@@ -23,6 +23,7 @@ See README.rst for more info
 
 """,
     url='https://github.com/dplepage/vertigo',
+    install_requires=['pyyaml'],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 2",
